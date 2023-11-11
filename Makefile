@@ -12,14 +12,20 @@ develop:
 check:
 	@python -c "__import__('is_instance').__test__()"
 
-upload:
-	python -m twine upload --repository testpypi dist/*
-
-download:
-	pip install -i https://test.pypi.org/simple/ is_instance
-
 uninstall:
 	pip uninstall $(PKG)
 
 clean:
 	rm -rfv dist/ build/ src/*.egg-info
+
+push-test:
+	python -m twine upload --repository testpypi dist/*
+
+pull-test:
+	pip install -i https://test.pypi.org/simple/ is_instance
+
+push-prod:
+	python -m twine upload dist/*
+
+pull-prod:
+	pip install is_instance
