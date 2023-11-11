@@ -1,7 +1,7 @@
 PKG := is_instance
 
 build:
-	true
+	python -m build
 
 install:
 	pip install .
