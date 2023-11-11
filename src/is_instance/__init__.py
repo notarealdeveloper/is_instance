@@ -75,6 +75,9 @@ def from_algebraic_data_type(obj):
     raise TypeError(obj)
 
 
+# here be dragons
+import inspect
+
 
 def test():
 
@@ -112,9 +115,32 @@ def test():
     assert not is_instance([d1, d2], [{str: bool}])
     assert not is_instance([d1, d2], [{str: str}])
 
-    import inspect
     print(inspect.getsource(test), file=sys.stderr)
     print("All tests passed", file=sys.stderr)
 
-is_instance.__test__ = test
-sys.modules[__name__] = is_instance
+
+class Module(types.ModuleType):
+    __call__ = staticmethod(is_instance)
+    __test__ = staticmethod(test)
+    __doc__  = inspect.getsource(test)
+    def __dir__(self):
+        return sorted(super().__dir__() + ['__call__', '__test__'])
+
+old = sys.modules[__name__]
+new = Module(__name__)
+
+module_attrs = [
+     '__builtins__',
+     '__cached__',
+     '__doc__',
+     '__file__',
+     '__loader__',
+     '__name__',
+     '__package__',
+     '__path__',
+     '__spec__'
+]
+for attr in module_attrs:
+    new.__dict__[attr] = old.__dict__[attr]
+
+sys.modules[__name__] = new
