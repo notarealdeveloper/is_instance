@@ -9,24 +9,7 @@ from operator import or_
 
 def is_instance(obj, cls):
 
-    """
-        Turducken typing.
-
-        assert is_instance('spam', str)
-        assert is_instance('spam', (str, int))
-        assert is_instance(['spam', 'and', 'eggs'], list[str])
-        assert is_instance((), tuple[int])
-        assert is_instance((1, 2, 3), tuple[int])
-        assert is_instance({'bird': True, 'alive': False}, dict[str, bool])
-        assert is_instance([{3: int}, {'s': str}], list[dict[object, type]])
-
-        d1 = {'age': 88, 'old': True}
-        d2 = {'age': 22, 'old': False}
-        assert is_instance([d1, d2], list[dict[str, int | bool]])
-        assert is_instance([d1, d2], list[dict[str, int]])
-        assert not is_instance([d1, d2], list[dict[str, bool]])
-        assert not is_instance([d1, d2], list[dict[str, str]])
-    """
+    """ Turducken typing. """
 
     if isinstance(cls, tuple):
         if all(isinstance(sub, type) for sub in cls):
@@ -134,6 +117,4 @@ def test():
     print("All tests passed", file=sys.stderr)
 
 is_instance.__test__ = test
-is_instance.__type__ = from_algebraic_data_type
 sys.modules[__name__] = is_instance
-
