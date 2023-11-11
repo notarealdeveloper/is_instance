@@ -1,0 +1,10 @@
+[project]
+name = "is_instance"
+version = "0.0.1"
+authors = [
+    { name="Jason Wilkes", email="notarealdeveloper@gmail.com" },
+]
+description = "a better isinstance for python"
+
+[project.urls]
+"Homepage" = "https://github.com/notarealdeveloper/is_instance"
