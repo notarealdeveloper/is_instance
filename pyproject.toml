@@ -1,10 +1,11 @@
 [project]
 name = "is_instance"
-version = "0.0.2"
+version = "0.0.3"
 authors = [
     { name="Jason Wilkes", email="notarealdeveloper@gmail.com" },
 ]
-description = "a better isinstance for python"
+description = "A better isinstance for python"
 
 [project.urls]
-"Homepage" = "https://github.com/notarealdeveloper/is_instance"
+source = "https://github.com/notarealdeveloper/is_instance"
+download = "https://pypi.org/project/is-instance/#files"

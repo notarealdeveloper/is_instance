@@ -115,7 +115,6 @@ def test():
     assert not is_instance([d1, d2], [{str: bool}])
     assert not is_instance([d1, d2], [{str: str}])
 
-    print(inspect.getsource(test), file=sys.stderr)
     print("All tests passed", file=sys.stderr)
 
 

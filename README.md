@@ -1,6 +1,6 @@
 # is_instance
 
-a better isinstance for python
+A better isinstance for python.
 
 ## examples
 
