@@ -1,10 +1,13 @@
 [project]
 name = "is_instance"
-version = "0.0.3"
+version = "0.0.4"
 authors = [
     { name="Jason Wilkes", email="notarealdeveloper@gmail.com" },
 ]
 description = "A better isinstance for python"
+dependencies = [
+    "callable_module",
+]
 
 [project.urls]
 source = "https://github.com/notarealdeveloper/is_instance"
