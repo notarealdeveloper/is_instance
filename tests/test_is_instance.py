@@ -21,6 +21,17 @@ def test_nesting():
     assert not is_instance([d1, d2], list[dict[str, bool]])
     assert not is_instance([d1, d2], list[dict[str, str]])
 
+def test_typed_tuples():
+    # note: this example does not work in the corresponding slang,
+    # since it's impossible to support that behavior without
+    # sacrificing the more important goal of matching the builtin
+    # isinstance behavior whenever possible. in other words:
+    assert is_instance(('cake', 'pie', 42), tuple[str, str, int])
+
+    # make sure we still match builtin isinstance's behavior
+    assert not isinstance(('cake', 'pie', 42), (str, str, int))
+    assert not is_instance(('cake', 'pie', 42), (str, str, int))
+
 def test_slang():
     d1 = {'age': 88, 'old': True}
     d2 = {'age': 22, 'old': False}
