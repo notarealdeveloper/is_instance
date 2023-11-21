@@ -9,6 +9,7 @@ uninstall:
 
 # contributor targets
 develop:
+	pip install --upgrade pip
 	pip install -e .[develop]
 
 check:
