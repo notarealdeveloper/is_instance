@@ -1,25 +1,26 @@
 PKG := is_instance
 
-build:
-	python -m build
-
+# user targets
 install:
-	@# note: this doesn't resolve dependencies
-	@# pip install dist/*.tar.gz
-	@# this does
 	pip install .
-
-develop:
-	pip install -e .
-
-check:
-	pytest tests/
 
 uninstall:
 	pip uninstall $(PKG)
 
+# contributor targets
+develop:
+	pip install -e .[develop]
+
+check:
+	pytest -v tests/
+
+# maintainer targets
+build:
+	pip install build
+	python -m build
+
 clean:
-	rm -rfv dist build/ src/*.egg-info
+	rm -rfv dist/ build/ src/*.egg-info
 
 push-test:
 	python -m twine upload --repository testpypi dist/*
@@ -32,4 +33,3 @@ push-prod:
 
 pull-prod:
 	pip install $(PKG)
-

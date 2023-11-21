@@ -9,6 +9,12 @@ dependencies = [
     "callable_module",
 ]
 
+[project.optional-dependencies]
+develop = [
+    "build",
+    "pytest",
+]
+
 [project.urls]
 source = "https://github.com/notarealdeveloper/is_instance"
 download = "https://pypi.org/project/is-instance/#files"
