@@ -1,6 +1,5 @@
 __all__ = [
     'is_instance',
-    'translate_slang',
 ]
 
 import types
@@ -19,8 +18,8 @@ def is_instance(obj, cls):
     if isinstance(cls, types.UnionType):
         return any(is_instance(obj, sub) for sub in cls.__args__)
 
-    if isinstance(cls, (list, set, dict)):
-        cls = translate_slang(cls)
+    #if isinstance(cls, (list, set, dict)):
+    #    cls = translate_slang(cls)
 
     if not isinstance(cls, types.GenericAlias):
         return isinstance(obj, cls)
@@ -52,29 +51,3 @@ def is_instance(obj, cls):
 
     raise TypeError(obj, cls)
 
-
-def translate_slang(obj):
-    """
-    Slang for the haskell type system.
-
-    Allows using abbreviations like:
-
-    * [int] to stand for list[int]
-
-    * {str: bool} to stand for dict[str, bool]
-
-    * [[int]] to stand for list[list[int]]
-
-    Lets us talk about types in a better way
-    without having to actually use haskell.
-    """
-    if len(obj) != 1:
-        raise TypeError(f"Not a valid type schema")
-    for cls in (tuple, list, set):
-        if isinstance(obj, cls):
-            return cls[*obj]
-    for cls in (dict,):
-        if isinstance(obj, cls):
-            [(key, val)] = obj.items()
-            return cls[key, val]
-    raise TypeError(obj)

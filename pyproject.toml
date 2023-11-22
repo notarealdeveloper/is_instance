@@ -1,6 +1,6 @@
 [project]
 name = "is_instance"
-version = "0.0.4"
+version = "0.0.5"
 authors = [
     { name="Jason Wilkes", email="notarealdeveloper@gmail.com" },
 ]
