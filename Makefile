@@ -1,24 +1,20 @@
 PKG := is_instance
 
-# user targets
+build:
+	pip install build
+	python -m build
+
 install:
-	pip install .
+	pip install dist/*.tar.gz
 
 uninstall:
 	pip uninstall $(PKG)
 
-# contributor targets
 develop:
-	pip install --upgrade pip
 	pip install -e .[develop]
 
 check:
 	pytest -v tests/
-
-# maintainer targets
-build:
-	pip install build
-	python -m build
 
 clean:
 	rm -rfv dist/ build/ src/*.egg-info
