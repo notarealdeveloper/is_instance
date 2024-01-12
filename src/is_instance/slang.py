@@ -1,11 +1,6 @@
 __all__ = [
     'translate_slang',
 ]
-
-# TODO: cls[*obj] is breaking on python 3.10
-# add this as a feature that requires 3.11
-# or newer, but don't break 3.10
-
 def translate_slang(obj):
     """
     Slang for the haskell type system.

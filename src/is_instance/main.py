@@ -2,6 +2,7 @@ __all__ = [
     'is_instance',
 ]
 
+import sys
 import types
 import typing
 from functools import reduce
@@ -19,8 +20,8 @@ def is_instance(obj, cls):
     if isinstance(cls, types.UnionType):
         return any(is_instance(obj, sub) for sub in cls.__args__)
 
-    #if isinstance(cls, (list, set, dict)):
-    #    cls = translate_slang(cls)
+    if isinstance(cls, (list, set, dict)):
+        cls = translate_slang(cls)
 
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
@@ -52,3 +53,13 @@ def is_instance(obj, cls):
 
     raise TypeError(obj, cls)
 
+
+if sys.version >= '3.11':
+    # translate_slang needs to write cls[*obj],
+    # which is apparently a syntax error in older
+    # versions of python, so we shouldn't even
+    # import the .slang module unless we're running
+    # at least python 3.11
+    from .slang import translate_slang
+else:
+    translate_slang = lambda x: x

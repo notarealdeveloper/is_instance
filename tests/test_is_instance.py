@@ -37,8 +37,7 @@ def test_sequence():
     assert is_instance(['cake'], Sequence[str])
     assert not is_instance(['cake'], Sequence[int])
 
-# TODO: support this for 3.11 or newer
-def dont_test_slang():
+def test_slang():
     d1 = {'age': 88, 'old': True}
     d2 = {'age': 22, 'old': False}
     assert is_instance(['spam', 'and', 'eggs'], [str])
