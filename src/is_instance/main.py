@@ -31,15 +31,15 @@ def is_instance(obj, cls):
     outer_type  = cls.__origin__
     inner_types = cls.__args__
 
-    if issubclass(outer_type, (list, set, typing.Sequence)):
-        assert len(inner_types) == 1
-        [inner_type] = inner_types
-        return all(is_instance(item, inner_type) for item in obj)
-
     if issubclass(outer_type, tuple):
         if len(inner_types) != len(obj):
             return False
         return all(is_instance(item, inner_type) for item, inner_type in zip(obj, inner_types))
+
+    if issubclass(outer_type, (list, set, typing.Sequence)):
+        assert len(inner_types) == 1
+        [inner_type] = inner_types
+        return all(is_instance(item, inner_type) for item in obj)
 
     if issubclass(outer_type, dict):
         assert len(inner_types) == 2

@@ -32,6 +32,11 @@ def test_typed_tuples():
     assert not isinstance(('cake', 'pie', 42), (str, str, int))
     assert not is_instance(('cake', 'pie', 42), (str, str, int))
 
+def test_sequence():
+    from typing import Sequence
+    assert is_instance(['cake'], Sequence[str])
+    assert not is_instance(['cake'], Sequence[int])
+
 # TODO: support this for 3.11 or newer
 def dont_test_slang():
     d1 = {'age': 88, 'old': True}
