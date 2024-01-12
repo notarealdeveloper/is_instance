@@ -31,7 +31,7 @@ def is_instance(obj, cls):
     outer_type  = cls.__origin__
     inner_types = cls.__args__
 
-    if issubclass(outer_type, (list, set)):
+    if issubclass(outer_type, (list, set, typing.Sequence)):
         assert len(inner_types) == 1
         [inner_type] = inner_types
         return all(is_instance(item, inner_type) for item in obj)
