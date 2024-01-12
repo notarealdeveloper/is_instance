@@ -3,6 +3,7 @@ __all__ = [
 ]
 
 import types
+import typing
 from functools import reduce
 from operator import or_
 
@@ -21,7 +22,7 @@ def is_instance(obj, cls):
     #if isinstance(cls, (list, set, dict)):
     #    cls = translate_slang(cls)
 
-    if not isinstance(cls, types.GenericAlias):
+    if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
 
     if not is_instance(obj, cls.__origin__):
