@@ -31,7 +31,7 @@ def is_instance(obj, cls):
         return False
 
     outer_type  = cls.__origin__
-    inner_types = cls.__args__
+    inner_types = typing.get_args(cls)
 
     if issubclass(outer_type, tuple):
         if len(inner_types) != len(obj):
@@ -51,6 +51,12 @@ def is_instance(obj, cls):
         assert len(inner_types) == 1
         [inner_type] = inner_types
         return all(is_instance(item, inner_type) for item in obj)
+
+    if issubclass(outer_type, Callable):
+        raise NotImplementedError("Callable not yet supported")
+
+    if issubclass(outer_type, Generator):
+        raise NotImplementedError("Generator not yet supported")
 
     raise TypeError(obj, cls)
 

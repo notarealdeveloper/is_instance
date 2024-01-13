@@ -1,6 +1,8 @@
 from collections.abc import (
+    Callable,
     Collection,
     Container,
+    Generator,
     Iterable,
     Iterator,
     Mapping,
@@ -55,6 +57,16 @@ def test_slang():
     assert not is_instance([d1, d2], [{str: bool}])
     assert not is_instance([d1, d2], [{str: str}])
 
+def test_callable():
+    assert not is_instance(lambda: None, Callable[[str], None])
+    assert is_instance(lambda: None, Callable[[], None])
+    def fun(x: str) -> None: ...
+    assert is_instance(fun, Callable[[str], None])
+    def fun(x: str, y: int) -> None: ...
+    assert is_instance(fun, Callable[[str, int], None])
+    def fun(x: str, y: int) -> bool: ...
+    assert is_instance(fun, Callable[[str, int], bool])
+
 def test_collection():
     assert is_instance(["cake"], Collection[str])
     assert not is_instance(["cake"], Collection[int])
@@ -62,6 +74,11 @@ def test_collection():
 def test_container():
     assert is_instance(["cake"], Container[str])
     assert not is_instance(["cake"], Container[int])
+
+def test_generator():
+    assert is_instance((_ for _ in "__"), Generator[str, None, None])
+    assert not is_instance((_ for _ in "__"), Generator[int, None, None])
+    # TODO: test Generator[...] + send/receive
 
 def test_iterable():
     assert is_instance(["cake"], Iterable[str])
