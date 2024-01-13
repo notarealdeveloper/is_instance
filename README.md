@@ -5,7 +5,7 @@ A better isinstance for python.
 ## examples
 
 ```python3
-import is_instance
+>>> import is_instance
 
 >>> is_instance(['spam', 'and', 'eggs'], list[str])
 True
@@ -26,6 +26,11 @@ True
 False
 
 >>> is_instance([{'a': 1, 'b': None}, {'a': 3, 'b': 4}], list[dict[str, int|None]])
+True
+
+>>> from collections.abc import Sequence
+
+>>> is_instance('cake', Sequence[str])
 True
 ```
 
