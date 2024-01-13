@@ -32,11 +32,6 @@ def test_typed_tuples():
     assert not isinstance(('cake', 'pie', 42), (str, str, int))
     assert not is_instance(('cake', 'pie', 42), (str, str, int))
 
-def test_sequence():
-    from typing import Sequence
-    assert is_instance(['cake'], Sequence[str])
-    assert not is_instance(['cake'], Sequence[int])
-
 def test_slang():
     d1 = {'age': 88, 'old': True}
     d2 = {'age': 22, 'old': False}
@@ -49,3 +44,7 @@ def test_slang():
     assert is_instance([d1, d2], [{str: int}])
     assert not is_instance([d1, d2], [{str: bool}])
     assert not is_instance([d1, d2], [{str: str}])
+
+def test_sequence():
+    assert is_instance(["cake"], Sequence[str])
+    assert not is_instance(["cake"], Sequence[int])
