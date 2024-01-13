@@ -1,3 +1,13 @@
+from collections.abc import (
+    Collection,
+    Container,
+    Iterable,
+    Iterator,
+    Mapping,
+    Reversible,
+    Sequence,
+)
+
 import is_instance
 
 def test_compat():
@@ -44,6 +54,30 @@ def test_slang():
     assert is_instance([d1, d2], [{str: int}])
     assert not is_instance([d1, d2], [{str: bool}])
     assert not is_instance([d1, d2], [{str: str}])
+
+def test_collection():
+    assert is_instance(["cake"], Collection[str])
+    assert not is_instance(["cake"], Collection[int])
+
+def test_container():
+    assert is_instance(["cake"], Container[str])
+    assert not is_instance(["cake"], Container[int])
+
+def test_iterable():
+    assert is_instance(["cake"], Iterable[str])
+    assert not is_instance(["cake"], Iterable[int])
+
+def test_iterator():
+    assert is_instance(iter(["cake"]), Iterator[str])
+    assert not is_instance(iter(["cake"]), Iterator[int])
+
+def test_mapping():
+    assert is_instance({"cake": "pie"}, Mapping[str, str])
+    assert not is_instance({"cake": "pie"}, Mapping[str, int])
+
+def test_reversible():
+    assert is_instance(["cake"], Reversible[str])
+    assert not is_instance(["cake"], Reversible[int])
 
 def test_sequence():
     assert is_instance(["cake"], Sequence[str])

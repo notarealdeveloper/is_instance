@@ -5,7 +5,7 @@ __all__ = [
 import sys
 import types
 import typing
-from collections.abc import Sequence
+from collections.abc import Container, Iterable, Mapping, Sequence
 from functools import reduce
 from operator import or_
 
@@ -38,12 +38,7 @@ def is_instance(obj, cls):
             return False
         return all(is_instance(item, inner_type) for item, inner_type in zip(obj, inner_types))
 
-    if issubclass(outer_type, (list, set, Sequence)):
-        assert len(inner_types) == 1
-        [inner_type] = inner_types
-        return all(is_instance(item, inner_type) for item in obj)
-
-    if issubclass(outer_type, dict):
+    if issubclass(outer_type, Mapping):
         assert len(inner_types) == 2
         key_type, val_type = inner_types
         return all(
@@ -51,6 +46,11 @@ def is_instance(obj, cls):
             is_instance(val, val_type) for
             key, val in obj.items()
         )
+
+    if issubclass(outer_type, (list, set, Container, Iterable, Sequence)):
+        assert len(inner_types) == 1
+        [inner_type] = inner_types
+        return all(is_instance(item, inner_type) for item in obj)
 
     raise TypeError(obj, cls)
 
