@@ -44,6 +44,10 @@ def test_typed_tuples():
     assert not isinstance(('cake', 'pie', 42), (str, str, int))
     assert not is_instance(('cake', 'pie', 42), (str, str, int))
 
+    assert is_instance((), tuple[int, ...])
+    assert is_instance((1,), tuple[int, ...])
+    assert is_instance((1, 2), tuple[int, ...])
+
 def test_slang():
     d1 = {'age': 88, 'old': True}
     d2 = {'age': 22, 'old': False}

@@ -34,6 +34,8 @@ def is_instance(obj, cls):
     inner_types = typing.get_args(cls)
 
     if issubclass(outer_type, tuple):
+        if Ellipsis in inner_types:
+            raise NotImplementedError("Ellipsis not yet supported")
         if len(inner_types) != len(obj):
             return False
         return all(is_instance(item, inner_type) for item, inner_type in zip(obj, inner_types))
