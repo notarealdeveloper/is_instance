@@ -1,8 +1,9 @@
 [project]
 name = "is_instance"
-version = "0.0.8"
+version = "0.0.9"
 authors = [
     { name="Jason Wilkes", email="notarealdeveloper@gmail.com" },
+    { name="Michael Chen", email="michael.chen@aicadium.ai" },
     { name="Hudson Cooper", email="hncooper96@gmail.com" },
 ]
 description = "A better isinstance for python"
