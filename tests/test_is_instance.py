@@ -97,6 +97,11 @@ def test_sequence():
     assert not is_instance('', Sequence[int])
     assert not is_instance(set(), Sequence)
 
+def test_mutable_sequence():
+    assert is_instance([''], MutableSequence[str])
+    assert not is_instance([''], MutableSequence[int])
+    assert not is_instance('', MutableSequence)
+
 def test_set():
     assert is_instance({0}, Set[int])
     assert not is_instance({0}, Set[str])
@@ -107,19 +112,14 @@ def test_mutable_set():
     assert not is_instance({0}, MutableSet[str])
     assert not is_instance(frozenset(), MutableSet)
 
-def test_mutable_sequence():
-    assert is_instance([''], MutableSequence[str])
-    assert not is_instance([''], MutableSequence[int])
-    assert not is_instance('', MutableSequence)
-
 ############
 ### TODO ###
 ############
 
-def TODO_test_iterator():
-    assert is_instance(iter(''), Iterator[str])
-    assert not is_instance(iter(''), Iterator[int])
-    assert not is_instance('', Iterator)
+def TODO_test_typed_tuples_ellipsis():
+    assert is_instance((), tuple[int, ...])
+    assert is_instance((1,), tuple[int, ...])
+    assert is_instance((1, 2), tuple[int, ...])
 
 def TODO_test_callable():
     assert not is_instance(lambda: None, Callable[[str], None])
@@ -131,12 +131,12 @@ def TODO_test_callable():
     def fun(x: str, y: int) -> bool: ...
     assert is_instance(fun, Callable[[str, int], bool])
 
-def TODO_test_typed_tuples_ellipsis():
-    assert is_instance((), tuple[int, ...])
-    assert is_instance((1,), tuple[int, ...])
-    assert is_instance((1, 2), tuple[int, ...])
-
 def TODO_test_generator():
     assert is_instance((_ for _ in ''), Generator[str, None, None])
     assert not is_instance((_ for _ in ''), Generator[int, None, None])
     # TODO: test Generator[...] + send/receive
+
+def TODO_test_iterator():
+    assert is_instance(iter(''), Iterator[str])
+    assert not is_instance(iter(''), Iterator[int])
+    assert not is_instance('', Iterator)
