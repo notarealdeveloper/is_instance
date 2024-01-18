@@ -49,6 +49,9 @@ def is_instance(obj, cls):
             key, val in obj.items()
         )
 
+    if issubclass(outer_type, Generator):
+        raise NotImplementedError('Generator not yet supported')
+
     if issubclass(outer_type, (list, set, Container, Iterable, Sequence)):
         assert len(inner_types) == 1
         [inner_type] = inner_types
@@ -56,9 +59,6 @@ def is_instance(obj, cls):
 
     if issubclass(outer_type, Callable):
         raise NotImplementedError('Callable not yet supported')
-
-    if issubclass(outer_type, Generator):
-        raise NotImplementedError('Generator not yet supported')
 
     raise TypeError(obj, cls)
 
