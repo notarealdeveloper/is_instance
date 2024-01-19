@@ -78,13 +78,13 @@ def test_iterable():
     assert not is_instance(0, Iterable)
 
 def test_mapping():
-    assert is_instance({'': 0}, Mapping[str, int])
+    assert is_instance({'': ''}, Mapping[str, str])
     assert not is_instance({'': ''}, Mapping[str, int])
     assert not is_instance('', Mapping)
 
 def test_mutable_mapping():
-    assert is_instance({'': 0}, MutableMapping[str, int])
-    assert not is_instance({'': 0}, MutableMapping[str, str])
+    assert is_instance({'': ''}, MutableMapping[str, str])
+    assert not is_instance({'': ''}, MutableMapping[str, int])
     assert not is_instance(MappingProxyType({}), MutableMapping)
 
 def test_reversible():
@@ -103,13 +103,13 @@ def test_mutable_sequence():
     assert not is_instance('', MutableSequence)
 
 def test_set():
-    assert is_instance({0}, Set[int])
-    assert not is_instance({0}, Set[str])
+    assert is_instance({''}, Set[str])
+    assert not is_instance({''}, Set[int])
     assert not is_instance([], Set)
 
 def test_mutable_set():
-    assert is_instance({0}, MutableSet[int])
-    assert not is_instance({0}, MutableSet[str])
+    assert is_instance({''}, MutableSet[str])
+    assert not is_instance({''}, MutableSet[int])
     assert not is_instance(frozenset(), MutableSet)
 
 ############
