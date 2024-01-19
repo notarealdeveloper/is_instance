@@ -64,16 +64,19 @@ def test_slang():
 
 def test_collection():
     assert is_instance('', Collection[str])
+    assert is_instance('', Collection[Collection[str]])
     assert not is_instance('', Collection[int])
     assert not is_instance(0, Collection)
 
 def test_container():
     assert is_instance('', Container[str])
+    assert is_instance('', Container[Container[str]])
     assert not is_instance('', Container[int])
     assert not is_instance(0, Container)
 
 def test_iterable():
     assert is_instance('', Iterable[str])
+    assert is_instance('', Iterable[Iterable[str]])
     assert not is_instance('', Iterable[int])
     assert not is_instance(0, Iterable)
 
@@ -89,11 +92,13 @@ def test_mutable_mapping():
 
 def test_reversible():
     assert is_instance('', Reversible[str])
+    assert is_instance('', Reversible[Reversible[str]])
     assert not is_instance('', Reversible[int])
     assert not is_instance(set(), Reversible)
 
 def test_sequence():
     assert is_instance('', Sequence[str])
+    assert is_instance('', Sequence[Sequence[str]])
     assert not is_instance('', Sequence[int])
     assert not is_instance(set(), Sequence)
 
