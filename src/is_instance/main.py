@@ -60,9 +60,7 @@ def is_instance(obj, cls, /) -> bool:
         [inner_type] = inner_types
         if len(obj):
             return all(is_instance(item, inner_type) for item in obj)
-        if isinstance(obj, str) and inner_type is not str:
-            return False
-        return True
+        return is_instance(obj, inner_type) or hasattr(obj, '__class_getitem__')
 
     if issubclass(outer_type, Callable):
         raise NotImplementedError('Callable not yet supported')
