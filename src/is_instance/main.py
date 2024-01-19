@@ -9,7 +9,7 @@ from collections.abc import Callable, Container, Generator, Iterable, Iterator, 
 from functools import reduce
 from operator import or_
 
-def is_instance(obj, cls):
+def is_instance(obj, cls, /) -> bool:
 
     """ Turducken typing. """
 
