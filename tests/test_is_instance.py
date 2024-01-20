@@ -62,6 +62,13 @@ def test_slang():
     assert not is_instance([d1, d2], [{str: bool}])
     assert not is_instance([d1, d2], [{str: str}])
 
+def test_literal():
+    assert is_instance('', Literal[''])
+    assert is_instance('', Literal['', 0])
+    assert is_instance('', Literal[Literal['']])
+    assert not is_instance(Literal[''], Literal[Literal['']])
+    assert not is_instance('', Literal[0])
+
 def test_collection():
     assert is_instance('', Collection[str])
     assert is_instance('', Collection[Collection[str]])
