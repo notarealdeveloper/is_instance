@@ -58,32 +58,32 @@ def test_slang():
     assert not is_instance([d1, d2], [{str: str}])
 
 def test_collection():
-    assert is_instance(["cake"], Collection[str])
-    assert not is_instance(["cake"], Collection[int])
+    assert is_instance(['cake'], Collection[str])
+    assert not is_instance(['cake'], Collection[int])
 
 def test_container():
-    assert is_instance(["cake"], Container[str])
-    assert not is_instance(["cake"], Container[int])
+    assert is_instance(['cake'], Container[str])
+    assert not is_instance(['cake'], Container[int])
 
 def test_iterable():
-    assert is_instance(["cake"], Iterable[str])
-    assert not is_instance(["cake"], Iterable[int])
+    assert is_instance(['cake'], Iterable[str])
+    assert not is_instance(['cake'], Iterable[int])
 
 def test_iterator():
-    assert is_instance(iter(["cake"]), Iterator[str])
-    assert not is_instance(iter(["cake"]), Iterator[int])
+    assert is_instance(iter(['cake']), Iterator[str])
+    assert not is_instance(iter(['cake']), Iterator[int])
 
 def test_mapping():
-    assert is_instance({"cake": "pie"}, Mapping[str, str])
-    assert not is_instance({"cake": "pie"}, Mapping[str, int])
+    assert is_instance({'cake': 'pie'}, Mapping[str, str])
+    assert not is_instance({'cake': 'pie'}, Mapping[str, int])
 
 def test_reversible():
-    assert is_instance(["cake"], Reversible[str])
-    assert not is_instance(["cake"], Reversible[int])
+    assert is_instance(['cake'], Reversible[str])
+    assert not is_instance(['cake'], Reversible[int])
 
 def test_sequence():
-    assert is_instance(["cake"], Sequence[str])
-    assert not is_instance(["cake"], Sequence[int])
+    assert is_instance(['cake'], Sequence[str])
+    assert not is_instance(['cake'], Sequence[int])
 
 ############
 ### TODO ###
@@ -105,6 +105,6 @@ def TODO_test_typed_tuples_ellipsis():
     assert is_instance((1, 2), tuple[int, ...])
 
 def TODO_test_generator():
-    assert is_instance((_ for _ in "__"), Generator[str, None, None])
-    assert not is_instance((_ for _ in "__"), Generator[int, None, None])
+    assert is_instance((_ for _ in '__'), Generator[str, None, None])
+    assert not is_instance((_ for _ in '__'), Generator[int, None, None])
     # TODO: test Generator[...] + send/receive

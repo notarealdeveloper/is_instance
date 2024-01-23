@@ -11,7 +11,7 @@ from operator import or_
 
 def is_instance(obj, cls):
 
-    """ Turducken typing. """
+    ''' Turducken typing. '''
 
     if isinstance(cls, tuple):
         if all(isinstance(sub, type) for sub in cls):
@@ -35,7 +35,7 @@ def is_instance(obj, cls):
 
     if issubclass(outer_type, tuple):
         if Ellipsis in inner_types:
-            raise NotImplementedError("Ellipsis not yet supported")
+            raise NotImplementedError('Ellipsis not yet supported')
         if len(inner_types) != len(obj):
             return False
         return all(is_instance(item, inner_type) for item, inner_type in zip(obj, inner_types))
@@ -58,7 +58,7 @@ def is_instance(obj, cls):
         return all(is_instance(item, inner_type) for item in obj)
 
     if issubclass(outer_type, Callable):
-        raise NotImplementedError("Callable not yet supported")
+        raise NotImplementedError('Callable not yet supported')
 
     raise TypeError(obj, cls)
 
