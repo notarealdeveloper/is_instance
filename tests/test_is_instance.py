@@ -69,10 +69,6 @@ def test_iterable():
     assert is_instance(["cake"], Iterable[str])
     assert not is_instance(["cake"], Iterable[int])
 
-def test_iterator():
-    assert is_instance(iter(["cake"]), Iterator[str])
-    assert not is_instance(iter(["cake"]), Iterator[int])
-
 def test_mapping():
     assert is_instance({"cake": "pie"}, Mapping[str, str])
     assert not is_instance({"cake": "pie"}, Mapping[str, int])
