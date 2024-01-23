@@ -22,6 +22,7 @@ def test_compat():
     assert is_instance('spam', str)
     assert is_instance('spam', (str, int))
     assert is_instance(True, int)
+    assert is_instance(None, None)
     assert not is_instance('spam', int)
     assert not is_instance('spam', (float, int))
     assert not is_instance(True, float)
