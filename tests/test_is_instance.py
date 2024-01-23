@@ -6,9 +6,14 @@ from collections.abc import (
     Iterable,
     Iterator,
     Mapping,
+    MutableMapping,
+    MutableSequence,
+    MutableSet,
     Reversible,
     Sequence,
+    Set,
 )
+from types import MappingProxyType
 from typing import Literal
 
 import is_instance
@@ -89,6 +94,11 @@ def test_mapping():
     assert not is_instance({'': ''}, Mapping[str, int])
     assert not is_instance('', Mapping)
 
+def test_mutable_mapping():
+    assert is_instance({'': ''}, MutableMapping[str, str])
+    assert not is_instance({'': ''}, MutableMapping[str, int])
+    assert not is_instance(MappingProxyType({}), MutableMapping)
+
 def test_reversible():
     assert is_instance('', Reversible[str])
     assert is_instance('', Reversible[Reversible[str]])
@@ -100,6 +110,23 @@ def test_sequence():
     assert is_instance('', Sequence[Sequence[str]])
     assert not is_instance('', Sequence[int])
     assert not is_instance(set(), Sequence)
+
+def test_mutable_sequence():
+    assert is_instance([''], MutableSequence[str])
+    assert is_instance([[]], MutableSequence[MutableSequence[None]])
+    assert not is_instance([''], MutableSequence[int])
+    assert not is_instance('', MutableSequence)
+
+def test_set():
+    assert is_instance({''}, Set[str])
+    assert is_instance({frozenset()}, Set[Set[None]])
+    assert not is_instance({''}, Set[int])
+    assert not is_instance([], Set)
+
+def test_mutable_set():
+    assert is_instance({''}, MutableSet[str])
+    assert not is_instance({''}, MutableSet[int])
+    assert not is_instance(frozenset(), MutableSet)
 
 ############
 ### TODO ###
