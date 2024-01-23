@@ -14,6 +14,7 @@ from collections.abc import (
     Set,
 )
 from types import MappingProxyType
+from typing import Literal
 
 import is_instance
 
