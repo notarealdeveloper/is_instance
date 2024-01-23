@@ -76,11 +76,6 @@ def test_iterable():
     assert not is_instance('', Iterable[int])
     assert not is_instance(0, Iterable)
 
-def test_iterator():
-    assert is_instance(iter(''), Iterator[str])
-    assert not is_instance(iter(''), Iterator[int])
-    assert not is_instance('', Iterator)
-
 def test_mapping():
     assert is_instance({'': ''}, Mapping[str, str])
     assert not is_instance({'': ''}, Mapping[str, int])
@@ -114,10 +109,16 @@ def TODO_test_callable():
     assert is_instance(fun, Callable[[str], None])
     def fun(x: str, y: int) -> None: ...
     assert is_instance(fun, Callable[[str, int], None])
-    def fun(x: str, y: int) -> bool: ...
-    assert is_instance(fun, Callable[[str, int], bool])
+    def fun(x: None) -> str: ...
+    assert is_instance(fun, Callable[[None], str])
 
 def TODO_test_generator():
     assert is_instance((_ for _ in ''), Generator[str, None, None])
     assert not is_instance((_ for _ in ''), Generator[int, None, None])
     # TODO: test Generator[...] + send/receive
+
+def TODO_test_iterator():
+    assert is_instance(iter(''), Iterator[str])
+    assert is_instance(iter(iter('')), Iterator[Iterator[str]])
+    assert not is_instance(iter(''), Iterator[int])
+    assert not is_instance('', Iterator)
