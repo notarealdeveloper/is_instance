@@ -22,7 +22,6 @@ def test_compat():
     assert is_instance('spam', str)
     assert is_instance('spam', (str, int))
     assert is_instance(True, int)
-    assert is_instance(None, None)
     assert not is_instance('spam', int)
     assert not is_instance('spam', (float, int))
     assert not is_instance(True, float)
@@ -55,6 +54,7 @@ def test_slang():
     d1 = {'age': 88, 'old': True}
     d2 = {'age': 22, 'old': False}
     assert is_instance(['spam', 'and', 'eggs'], [str])
+    assert is_instance(None, None)
     assert is_instance([], [int])
     assert is_instance({1, 2, 3}, {int})
     assert is_instance({'bird': True, 'alive': False}, {str: bool})
