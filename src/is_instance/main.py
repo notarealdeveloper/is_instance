@@ -24,6 +24,9 @@ def is_instance(obj, cls):
     if isinstance(cls, (list, set, dict)):
         cls = translate_slang(cls)
 
+    if cls is None:
+        cls = types.NoneType
+
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
 
