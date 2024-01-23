@@ -30,6 +30,9 @@ def is_instance(obj, cls):
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
 
+    if isinstance(cls, typing._LiteralGenericAlias):
+        return obj in cls.__args__
+
     if not is_instance(obj, cls.__origin__):
         return False
 
