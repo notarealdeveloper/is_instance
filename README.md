@@ -37,7 +37,7 @@ True
 The following type slang is also supported, inspired by the Haskell type system.
 
 ```python3
-import is_instance
+>>> import is_instance
 
 >>> is_instance(['spam', 'and', 'eggs'], [str])
 True
