@@ -5,7 +5,7 @@ __all__ = [
 import sys
 import types
 import typing
-from collections.abc import Container, Iterable, Mapping, Sequence
+from collections.abc import Container, Generator, Iterable, Iterator, Mapping
 from functools import reduce
 from operator import or_
 
@@ -24,8 +24,14 @@ def is_instance(obj, cls):
     if isinstance(cls, (list, set, dict)):
         cls = translate_slang(cls)
 
+    if cls is None:
+        cls = types.NoneType
+
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
+
+    if isinstance(cls, typing._LiteralGenericAlias):
+        return obj in cls.__args__
 
     if not is_instance(obj, cls.__origin__):
         return False
@@ -53,12 +59,6 @@ def is_instance(obj, cls):
         assert len(inner_types) == 1
         [inner_type] = inner_types
         return all(is_instance(item, inner_type) for item in obj)
-
-    if issubclass(outer_type, Callable):
-        raise NotImplementedError("Callable not yet supported")
-
-    if issubclass(outer_type, Generator):
-        raise NotImplementedError("Generator not yet supported")
 
     raise TypeError(obj, cls)
 

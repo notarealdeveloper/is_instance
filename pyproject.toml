@@ -10,6 +10,7 @@ description = "A better isinstance for python"
 dependencies = [
     "callable_module",
 ]
+requires-python = ">=3.10"
 
 [project.optional-dependencies]
 develop = [
