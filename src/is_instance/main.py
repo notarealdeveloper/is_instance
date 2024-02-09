@@ -5,7 +5,7 @@ __all__ = [
 import sys
 import types
 import typing
-from collections.abc import Container, Generator, Iterable, Iterator, Mapping
+from collections.abc import Container, Iterable, Mapping, Sequence
 from functools import reduce
 from operator import or_
 
