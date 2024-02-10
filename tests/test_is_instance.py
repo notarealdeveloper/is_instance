@@ -1,15 +1,3 @@
-from collections.abc import (
-    Callable,
-    Collection,
-    Container,
-    Generator,
-    Iterable,
-    Iterator,
-    Mapping,
-    Reversible,
-    Sequence,
-)
-
 import is_instance
 
 def test_compat():
@@ -57,54 +45,79 @@ def test_slang():
     assert not is_instance([d1, d2], [{str: bool}])
     assert not is_instance([d1, d2], [{str: str}])
 
-def test_collection():
-    assert is_instance(["cake"], Collection[str])
-    assert not is_instance(["cake"], Collection[int])
 
-def test_container():
-    assert is_instance(["cake"], Container[str])
-    assert not is_instance(["cake"], Container[int])
+"""
+The tests below are a bit excessive, but fun.
 
-def test_iterable():
-    assert is_instance(["cake"], Iterable[str])
-    assert not is_instance(["cake"], Iterable[int])
+Iterate over all objects in the typing module.
 
-def test_iterator():
-    assert is_instance(iter(["cake"]), Iterator[str])
-    assert not is_instance(iter(["cake"]), Iterator[int])
+If they're classes we can perform a cls[a] on
+for single type a, then make sure is_instance
+behaves as expected on them.
+"""
 
-def test_mapping():
-    assert is_instance({"cake": "pie"}, Mapping[str, str])
-    assert not is_instance({"cake": "pie"}, Mapping[str, int])
+def test_unary_abcs():
 
-def test_reversible():
-    assert is_instance(["cake"], Reversible[str])
-    assert not is_instance(["cake"], Reversible[int])
+    import types
+    import typing
+    modules = (types, typing)
 
-def test_sequence():
-    assert is_instance(["cake"], Sequence[str])
-    assert not is_instance(["cake"], Sequence[int])
+    obj = ['cake']
 
-############
-### TODO ###
-############
+    for module in modules:
+        for name, cls in vars(module).items():
 
-def TODO_test_callable():
-    assert not is_instance(lambda: None, Callable[[str], None])
-    assert is_instance(lambda: None, Callable[[], None])
-    def fun(x: str) -> None: ...
-    assert is_instance(fun, Callable[[str], None])
-    def fun(x: str, y: int) -> None: ...
-    assert is_instance(fun, Callable[[str, int], None])
-    def fun(x: str, y: int) -> bool: ...
-    assert is_instance(fun, Callable[[str, int], bool])
+            # if we're not looking at a class object, ignore it
+            if not isinstance(cls, type):
+                continue
 
-def TODO_test_typed_tuples_ellipsis():
-    assert is_instance((), tuple[int, ...])
-    assert is_instance((1,), tuple[int, ...])
-    assert is_instance((1, 2), tuple[int, ...])
+            # if we're not looking at a unary abc, ignore it
+            try:
+                cls[str]
+            except:
+                continue
 
-def TODO_test_generator():
-    assert is_instance((_ for _ in "__"), Generator[str, None, None])
-    assert not is_instance((_ for _ in "__"), Generator[int, None, None])
-    # TODO: test Generator[...] + send/receive
+            # if we're here, it's a unary abstract base class,
+            # so make sure it behaves how we expect it to.
+            if issubclass(list, cls):
+                assert     is_instance(obj, cls)
+                assert     is_instance(obj, cls[str])
+                assert not is_instance(obj, cls[int])
+            else:
+                assert not is_instance(obj, cls)
+                assert not is_instance(obj, cls[str])
+                assert not is_instance(obj, cls[int])
+
+def test_binary_abcs():
+
+    import types
+    import typing
+    modules = (types, typing)
+
+    obj = {"cake": "pie"}
+
+    for module in modules:
+        for name, cls in vars(module).items():
+
+            # if we're not looking at a class object, ignore it
+            if not isinstance(cls, type):
+                continue
+
+            # if we're not looking at a binary abc, ignore it
+            try:
+                cls[str, str]
+            except:
+                continue
+
+            # if we're here, it's a unary abstract base class,
+            # so make sure it behaves how we expect it to.
+            if isinstance(obj, cls):
+                assert     is_instance(obj, cls)
+                assert     is_instance(obj, cls[str, str])
+                assert not is_instance(obj, cls[str, int])
+                assert not is_instance(obj, cls[int, str])
+            else:
+                assert not is_instance(obj, cls)
+                assert not is_instance(obj, cls[str, str])
+                assert not is_instance(obj, cls[str, int])
+                assert not is_instance(obj, cls[int, str])
