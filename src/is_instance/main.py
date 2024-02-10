@@ -24,36 +24,41 @@ def is_instance(obj, cls):
     if isinstance(cls, (list, set, dict)):
         cls = translate_slang(cls)
 
+    if cls is None:
+        cls = types.NoneType
+
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
 
-    cls_origin = typing.get_origin(cls)
-    cls_args   = typing.get_args(cls)
-
     if isinstance(cls, typing._LiteralGenericAlias):
-        return obj in cls_args
+        return obj in cls.__args__
 
-    if not is_instance(obj, cls_origin):
+    if not is_instance(obj, cls.__origin__):
         return False
 
-    if issubclass(cls_origin, tuple):
-        if len(cls_args) != len(obj):
-            return False
-        return all(is_instance(item, cls_arg) for item, cls_arg in zip(obj, cls_args))
+    outer_type  = cls.__origin__
+    inner_types = typing.get_args(cls)
 
-    if issubclass(cls_origin, Mapping):
-        assert len(cls_args) == 2
-        key_type, val_type = cls_args
+    if issubclass(outer_type, tuple):
+        if Ellipsis in inner_types:
+            raise NotImplementedError("Ellipsis not yet supported")
+        if len(inner_types) != len(obj):
+            return False
+        return all(is_instance(item, inner_type) for item, inner_type in zip(obj, inner_types))
+
+    if issubclass(outer_type, Mapping):
+        assert len(inner_types) == 2
+        key_type, val_type = inner_types
         return all(
             is_instance(key, key_type) and
             is_instance(val, val_type) for
             key, val in obj.items()
         )
 
-    if issubclass(cls_origin, (Container, Sequence)):
-        assert len(cls_args) == 1, cls
-        [cls_arg] = cls_args
-        return all(is_instance(item, cls_arg) for item in obj)
+    if issubclass(outer_type, (list, set, Container, Iterable, Sequence)):
+        assert len(inner_types) == 1
+        [inner_type] = inner_types
+        return all(is_instance(item, inner_type) for item in obj)
 
     raise TypeError(obj, cls)
 
