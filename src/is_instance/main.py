@@ -63,7 +63,7 @@ def is_instance(obj, cls):
     raise TypeError(obj, cls)
 
 
-if sys.version >= '3.11':
+if sys.version_info >= (3, 11):
     # translate_slang needs to write cls[*obj],
     # which is apparently a syntax error in older
     # versions of python, so we shouldn't even
