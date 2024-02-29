@@ -18,7 +18,7 @@ def is_instance(obj, cls):
             cls = reduce(or_, cls)
             return is_instance(obj, cls)
 
-    if isinstance(cls, types.UnionType):
+    if sys.version_info >= (3,10) and isinstance(cls, types.UnionType):
         return any(is_instance(obj, sub) for sub in cls.__args__)
 
     if isinstance(cls, (list, set, dict)):
