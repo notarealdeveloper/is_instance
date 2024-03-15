@@ -1,10 +1,7 @@
 from collections.abc import (
-    Callable,
     Collection,
     Container,
-    Generator,
     Iterable,
-    Iterator,
     Mapping,
     Reversible,
     Sequence,
