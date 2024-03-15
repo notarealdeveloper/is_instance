@@ -6,17 +6,13 @@ import sys
 import types
 import typing
 from collections.abc import Callable, Container, Generator, Iterable, Iterator, Mapping
-from functools import reduce
-from operator import or_
+
 
 def is_instance(obj, cls):
 
     """ Turducken typing. """
 
     if isinstance(cls, tuple):
-        if all(isinstance(sub, type) for sub in cls):
-            cls = reduce(or_, cls)
-            return is_instance(obj, cls)
         return any(is_instance(obj, sub) for sub in cls)
 
     if sys.version_info >= (3,10) and isinstance(cls, types.UnionType):
