@@ -9,6 +9,7 @@ from collections.abc import (
     Reversible,
     Sequence,
 )
+from typing import Never, NoReturn
 
 import is_instance
 
@@ -80,3 +81,7 @@ def test_reversible():
 def test_sequence():
     assert is_instance(["cake"], Sequence[str])
     assert not is_instance(["cake"], Sequence[int])
+
+def test_bottom_types():
+    assert not is_instance("cake", Never)
+    assert not is_instance("cake", NoReturn)
