@@ -42,6 +42,19 @@ def test_typed_tuples():
     assert not isinstance(('cake', 'pie', 42), (str, str, int))
     assert not is_instance(('cake', 'pie', 42), (str, str, int))
 
+
+def test_tuple_ellipsis():
+    assert is_instance((), tuple[...])
+    assert is_instance((1,), tuple[int, ...])
+    assert is_instance((1, 2), tuple[int, ...])
+    assert is_instance((1, None), tuple[int, ...])
+    assert is_instance((1, 2), tuple[int, ..., ..., int])
+    assert is_instance((1, None, 2, 3), tuple[int, ..., int, int])
+    assert is_instance((1, 2, None, 3), tuple[int, int, ..., int])
+    assert is_instance((1, 2, 3), tuple[int, ..., int, ..., int])
+    assert not is_instance((), tuple[int, ...])
+
+
 def test_slang():
     d1 = {'age': 88, 'old': True}
     d2 = {'age': 22, 'old': False}
