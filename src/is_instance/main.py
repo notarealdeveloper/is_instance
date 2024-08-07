@@ -8,7 +8,7 @@ import typing
 from collections.abc import Callable, Container, Generator, Iterable, Iterator, Mapping
 
 
-def is_instance(obj, cls):
+def is_instance(obj, cls, /):
 
     """ Turducken typing. """
 
