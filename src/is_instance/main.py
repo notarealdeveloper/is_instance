@@ -24,6 +24,13 @@ def is_instance(obj, cls, /):
     if cls is None:
         cls = types.NoneType
 
+    if sys.version_info >= (3, 6, 2):
+        if cls == typing.NoReturn:
+            return False
+        if sys.version_info >= (3, 11):
+            if cls == typing.Never:
+                return False
+
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
 
