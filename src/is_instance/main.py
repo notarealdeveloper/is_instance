@@ -7,18 +7,15 @@ import types
 import typing
 from collections import deque
 from collections.abc import Callable, Container, Generator, Iterable, Iterator, Mapping
-from functools import reduce
 from itertools import groupby
-from operator import or_
 
-def is_instance(obj, cls):
+
+def is_instance(obj, cls, /):
 
     """ Turducken typing. """
 
     if isinstance(cls, tuple):
-        if all(isinstance(sub, type) for sub in cls):
-            cls = reduce(or_, cls)
-            return is_instance(obj, cls)
+        return any(is_instance(obj, sub) for sub in cls)
 
     if sys.version_info >= (3,10) and isinstance(cls, types.UnionType):
         return any(is_instance(obj, sub) for sub in cls.__args__)
@@ -28,6 +25,13 @@ def is_instance(obj, cls):
 
     if cls is None:
         cls = types.NoneType
+
+    if sys.version_info >= (3, 6, 2):
+        if cls == typing.NoReturn:
+            return False
+        if sys.version_info >= (3, 11):
+            if cls == typing.Never:
+                return False
 
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
@@ -85,9 +89,9 @@ def _ellipsis(objs, types_, /) -> bool:
         pop_side = f"pop{'left' * (idx + 1)}"
         pop_objs, pop_types = getattr(objs, pop_side), getattr(types_, pop_side)
         while types_ and types_[idx] is not Ellipsis:
-            if not (objs and is_instance(pop_objs(), pop_types())):
-                return False
-            continue
+            if objs and is_instance(pop_objs(), pop_types()):
+                continue
+            return False
     assert types_[0] is Ellipsis and types_[-1] is Ellipsis
 
     pop_objs = objs.popleft
