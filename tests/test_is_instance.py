@@ -1,10 +1,7 @@
 from collections.abc import (
-    Callable,
     Collection,
     Container,
-    Generator,
     Iterable,
-    Iterator,
     Mapping,
     Reversible,
     Sequence,
@@ -24,7 +21,7 @@ def test_nesting():
     d1 = {'age': 88, 'old': True}
     d2 = {'age': 22, 'old': False}
     assert is_instance(['spam', 'and', 'eggs'], list[str])
-    assert is_instance([], list[int])
+    assert is_instance([], (list[int],))
     assert is_instance({1, 2, 3}, set[int])
     assert is_instance({'bird': True, 'alive': False}, dict[str, bool])
     assert is_instance([{3: int}, {'s': str}], list[dict[object, type]])
