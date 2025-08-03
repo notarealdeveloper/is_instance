@@ -65,7 +65,7 @@ def is_instance(obj, cls):
         Footnote 1: For more details, see the following:
         * https://docs.python.org/3/glossary.html#term-duck-typing
         * https://en.wikipedia.org/wiki/Turducken
-        * https://github.com/notarealdeveloper/is_instance/blob/master/src/is_instance/main.py#L73-L78
+        * https://github.com/notarealdeveloper/is_instance/blob/master/src/is_instance/main.py#L64-L69
     """
 
 if sys.version_info >= (3, 11):
