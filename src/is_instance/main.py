@@ -5,7 +5,7 @@ __all__ = [
 import sys
 import types
 import typing
-from collections.abc import Callable, Container, Generator, Iterable, Iterator, Mapping
+from collections.abc import Container, Iterable, Mapping
 
 
 def is_instance(obj, cls):
@@ -52,21 +52,12 @@ def is_instance(obj, cls):
             key, val in obj.items()
         )
 
-    if issubclass(cls_origin, Generator):
-        raise NotImplementedError('Generator not yet supported')
-
-    if issubclass(cls_origin, Iterator):
-        raise NotImplementedError('Iterator not yet supported')
-
     if issubclass(cls_origin, (Container, Iterable)):
         assert len(cls_args) == 1
         [inner_type] = cls_args
         if len(obj):
             return all(is_instance(item, inner_type) for item in obj)
         return is_instance(obj, inner_type) or hasattr(obj, '__class_getitem__')
-
-    if issubclass(cls_origin, Callable):
-        raise NotImplementedError('Callable not yet supported')
 
     raise TypeError(obj, cls)
 
