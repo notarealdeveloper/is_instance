@@ -5,21 +5,19 @@ __all__ = [
 import sys
 import types
 import typing
-from collections import deque
 from collections.abc import Callable, Container, Generator, Iterable, Iterator, Mapping
-from itertools import groupby
 
 
-def is_instance(obj, cls, /):
+def is_instance(obj, cls):
 
-    """ Turducken typing. """
+    """
+        Turducken typing.¹
+    """
 
     if isinstance(cls, tuple):
-        if all(isinstance(sub, type) for sub in cls):
-            cls = functools.reduce(lambda a, b: a | b, cls)
-            return is_instance(obj, cls)
+        return any(is_instance(obj, sub) for sub in cls)
 
-    if sys.version_info >= (3,10) and isinstance(cls, types.UnionType):
+    if sys.version_info >= (3, 10) and isinstance(cls, types.UnionType):
         return any(is_instance(obj, sub) for sub in cls.__args__)
 
     if isinstance(cls, (list, set, dict)):
@@ -41,8 +39,6 @@ def is_instance(obj, cls, /):
         return False
 
     if issubclass(cls_origin, tuple):
-        if Ellipsis in cls_args:
-            return _ellipsis(obj, cls_args)
         if len(cls_args) != len(obj):
             return False
         return all(is_instance(item, cls_arg) for item, cls_arg in zip(obj, cls_args))
@@ -74,6 +70,12 @@ def is_instance(obj, cls, /):
 
     raise TypeError(obj, cls)
 
+    """
+        Footnote 1: For more details, see the following:
+        * https://docs.python.org/3/glossary.html#term-duck-typing
+        * https://en.wikipedia.org/wiki/Turducken
+        * https://github.com/notarealdeveloper/is_instance/blob/master/src/is_instance/main.py#L73-L78
+    """
 
 if sys.version_info >= (3, 11):
     # translate_slang needs to write cls[*obj],

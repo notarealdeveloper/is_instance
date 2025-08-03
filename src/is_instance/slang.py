@@ -1,10 +1,9 @@
 __all__ = [
     'translate_slang',
 ]
+
 def translate_slang(obj):
     """
-    Slang for the haskell type system.
-
     Allows using abbreviations like:
 
     * [int] to stand for list[int]
@@ -13,8 +12,7 @@ def translate_slang(obj):
 
     * [[int]] to stand for list[list[int]]
 
-    Lets us talk about types in a better way
-    without having to actually use haskell.
+    Inspired by the haskell type system.
     """
     if len(obj) != 1:
         raise TypeError(f"Not a valid type schema")

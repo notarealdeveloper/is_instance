@@ -2,9 +2,10 @@
 
 A better isinstance for python.
 
-## examples
 
-```python3
+## usage
+
+```python
 >>> import is_instance
 
 >>> is_instance(['spam', 'and', 'eggs'], list[str])
@@ -34,9 +35,11 @@ True
 True
 ```
 
+## slang
+
 The following type slang is also supported, inspired by the Haskell type system.
 
-```python3
+```python
 >>> import is_instance
 
 >>> is_instance(['spam', 'and', 'eggs'], [str])
@@ -54,3 +57,28 @@ False
 >>> is_instance([{'a': 1, 'b': None}, {'a': 3, 'b': 4}], [{str: int | None}])
 True
 ```
+
+## install
+
+To install the package and all required dependencies, run
+
+```
+make install
+```
+
+
+## contributing
+
+To get the developer dependencies and a [PEP 660](https://peps.python.org/pep-0660/) editable install, run
+
+```
+make develop
+```
+
+Once you've made some changes, run
+
+```
+make check
+```
+
+to see if everything still works.
