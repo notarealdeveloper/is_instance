@@ -15,7 +15,9 @@ def is_instance(obj, cls, /):
     """ Turducken typing. """
 
     if isinstance(cls, tuple):
-        return any(is_instance(obj, sub) for sub in cls)
+        if all(isinstance(sub, type) for sub in cls):
+            cls = functools.reduce(lambda a, b: a | b, cls)
+            return is_instance(obj, cls)
 
     if sys.version_info >= (3,10) and isinstance(cls, types.UnionType):
         return any(is_instance(obj, sub) for sub in cls.__args__)
@@ -25,13 +27,6 @@ def is_instance(obj, cls, /):
 
     if cls is None:
         cls = types.NoneType
-
-    if sys.version_info >= (3, 6, 2):
-        if cls == typing.NoReturn:
-            return False
-        if sys.version_info >= (3, 11):
-            if cls == typing.Never:
-                return False
 
     if not isinstance(cls, (types.GenericAlias, typing._GenericAlias)):
         return isinstance(obj, cls)
@@ -78,37 +73,6 @@ def is_instance(obj, cls, /):
         raise NotImplementedError('Callable not yet supported')
 
     raise TypeError(obj, cls)
-
-
-def _ellipsis(objs, types_, /) -> bool:
-    """Check if objs is a valid ordering according to types in the subscript."""
-    objs, types_ = deque(objs), deque(types_)
-
-    # trim initial/terminal non-Ellipsis
-    for idx in (0, -1):
-        pop_side = f"pop{'left' * (idx + 1)}"
-        pop_objs, pop_types = getattr(objs, pop_side), getattr(types_, pop_side)
-        while types_ and types_[idx] is not Ellipsis:
-            if objs and is_instance(pop_objs(), pop_types()):
-                continue
-            return False
-    assert types_[0] is Ellipsis and types_[-1] is Ellipsis
-
-    pop_objs = objs.popleft
-    for current_types in (  # split remaining types on Ellipsis into consecutive groups
-        deque(group)  # incidentally, this collapses consecutive Ellipsis args
-        for key, group in groupby(types_, lambda typ: typ is Ellipsis)
-        if not key
-    ):
-        pop_types = current_types.popleft
-        while current_types:
-            if objs:
-                if is_instance(pop_objs(), current_types[0]):
-                    pop_types()
-                continue
-            return False
-
-    return True
 
 
 if sys.version_info >= (3, 11):
